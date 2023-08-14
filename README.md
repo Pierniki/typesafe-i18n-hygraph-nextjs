@@ -187,7 +187,7 @@ export const useHygraphClient = (inputLocale: Locale) => {
 ```
 Usage example:
 ```
-// page.tsx
+// app/[lang]/page.tsx
 
 export default async function IndexPage({
   params: { lang },
@@ -202,7 +202,7 @@ export default async function IndexPage({
 ```
 Only thing left is to pass the locale we get from the routing setup and provide it to our pages:
 ```
-// layout.tsx
+// app/[lang]/layout.tsx
 
 export default function Root({
   children,
