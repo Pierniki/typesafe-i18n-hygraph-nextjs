@@ -141,3 +141,86 @@ export const config = {
   ],
 };
 ```
+
+Next goal was to create an abstraction layer in form of a hook that would be responsible for fetching and providing the locale to outgoing requests.
+
+```
+//hygraphClient.ts
+
+import { GraphQLClient } from "graphql-request";
+import { graphql } from "./gql";
+import { i18n, type HygraphLocaleEnum, type Locale } from "./i18n";
+import { TypedDocumentNode } from "@graphql-typed-document-node/core";
+
+const hygraphClient = (init?: RequestInit) =>
+  new GraphQLClient(process.env.HYGRAPH_CONTENT_API_URL!, {
+    // overriding the default fetch function with the one altered by next.js to handle caching times etc.
+    fetch: (url, config) => fetch(url, { ...config, ...init }),
+  });
+
+const getBlogposts = graphql(`
+  query getBlogposts($locales: [Locale!] = [en]) {
+    blogposts(locales: $locales) {
+      id
+      title
+      content {
+        html
+      }
+    }
+  }
+`);
+
+export const useHygraphClient = (inputLocale: Locale) => {
+  const locale = inputLocale.replace("-", "_") as HygraphLocaleEnum;
+
+  const makeRequest =
+    <TQuery, TVariables>(document: TypedDocumentNode<TQuery, TVariables>) =>
+    (init?: RequestInit) =>
+      hygraphClient(init).request(document, {
+        locales: [locale],
+      });
+
+  return {
+    getBlogposts: makeRequest(getBlogposts),
+  };
+};
+```
+Usage example:
+```
+// page.tsx
+
+export default async function IndexPage({
+  params: { lang },
+}: {
+  params: { lang: Locale };
+}) {
+  const client = useHygraphClient(lang);
+  const { blogposts } = await client.getBlogposts();
+
+  return <div>{JSON.stringify(blogposts)}</div>;
+}
+```
+Only thing left is to pass the locale we get from the routing setup and provide it to our pages:
+```
+// layout.tsx
+
+export default function Root({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: { lang: string };
+}) {
+  return (
+    <html lang={params.lang}>
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+And this is the file structure we ended up on.
+
+![image](https://github.com/Pierniki/typesafe-i18n-hygraph-nextjs/assets/35572075/4c466773-f887-4200-9767-2661c77c2a1e)
+
+
