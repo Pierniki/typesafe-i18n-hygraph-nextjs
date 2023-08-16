@@ -144,7 +144,7 @@ export const config = {
 
 Next goal was to create an abstraction layer in form of a hook that would be responsible for fetching and providing the locale to outgoing requests.
 
-```
+```typescript
 //hygraphClient.ts
 
 import { GraphQLClient } from "graphql-request";
@@ -186,7 +186,7 @@ export const useHygraphClient = (inputLocale: Locale) => {
 };
 ```
 Usage example:
-```
+```typescript
 // app/[lang]/page.tsx
 
 export default async function IndexPage({
@@ -201,7 +201,7 @@ export default async function IndexPage({
 }
 ```
 Only thing left is to pass the locale we get from the routing setup and provide it to our pages:
-```
+```typescript
 // app/[lang]/layout.tsx
 
 export default function Root({
