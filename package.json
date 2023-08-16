@@ -3,7 +3,7 @@
   "scripts": {
     "codegen": "graphql-codegen --require dotenv/config --config codegen.ts --watch",
     "dev": "next",
-    "build": "next build",
+    "build": "pnpm prebuild && next build",
     "start": "next start",
     "prebuild": "graphql-codegen --require dotenv/config --config codegen.ts "
   },
