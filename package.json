@@ -4,7 +4,8 @@
     "codegen": "graphql-codegen --require dotenv/config --config codegen.ts --watch",
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "prebuild": "graphql-codegen --require dotenv/config --config codegen.ts "
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "0.2.32",
