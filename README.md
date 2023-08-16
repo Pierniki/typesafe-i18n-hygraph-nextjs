@@ -93,30 +93,30 @@ Time to setup the middleware responsible for finding user's prefered language an
 
 ```typescript
 // middleware.ts
-
-import { NextRequest, NextResponse } from "next/server";
-import { i18n } from "./i18n";
-import Negotiator from "negotiator";
-import { match } from "@formatjs/intl-localematcher";
+import { NextRequest, NextResponse } from 'next/server';
+import { i18n } from './i18n';
+import Negotiator from 'negotiator';
+import { match } from '@formatjs/intl-localematcher';
 
 function getLocale(request: NextRequest) {
   // Negotiator expects headers as a record object, not a Set thus some mapping is required
-  const headers = [...request.headers.entries()].reduce<Record<string, string>>(
-    (headersObject, [key, value]) => {
-      return {
-        ...headersObject,
-        [key]: value,
-      };
-    },
-    {}
-  );
+  const headers = mapHeadersToObject(request.headers);
   const languages = new Negotiator({
-    headers,
+    headers
   }).languages();
 
-  // we look for user's prefered languages in our available locales. Fallback to a default if none are available.
   return match(languages, i18n.locales, i18n.defaultLocale);
 }
+
+const mapHeadersToObject = (headers: Headers) => {
+  return [...headers.entries()].reduce<Record<string, string>>(
+    (headersObject, [key, value]) => ({
+      ...headersObject,
+      [key]: value
+    }),
+    {}
+  );
+};
 
 export function middleware(request: NextRequest) {
   // Check if there is any supported locale in the pathname
@@ -134,12 +134,20 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Skip all internal paths (_next)
-    "/((?!_next).*)",
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - public folder
+     */
+    '/((?!api|_next/static|_next/image|favicon.ico|public).*)'
     // Optional: only run on root (/) URL
     // '/'
-  ],
+  ]
 };
+
 ```
 
 Next goal was to create an abstraction layer in form of a hook that would be responsible for fetching and providing the locale to outgoing requests.
