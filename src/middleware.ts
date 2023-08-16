@@ -4,6 +4,7 @@ import Negotiator from 'negotiator';
 import { match } from '@formatjs/intl-localematcher';
 
 function getLocale(request: NextRequest) {
+  // Negotiator expects headers as a record object, not a Set thus some mapping is required
   const headers = mapHeadersToObject(request.headers);
   const languages = new Negotiator({
     headers
