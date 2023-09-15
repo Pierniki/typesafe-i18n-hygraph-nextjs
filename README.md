@@ -35,7 +35,7 @@ Last step involves creating some sample blogposts for testing purpouses.
 
 ### Next.js Project Initialization
 
-I bootsrapped basic boilerplate and **graphql codegen** using `@graphql-codegen/cli` library. If you are interested in details you can check it out in this [repository](https://github.com/Pierniki/typesafe-i18n-nextjs-hygraph).
+I bootsrapped basic boilerplate and **graphql codegen** using `@graphql-codegen/cli` library. If you are interested in details you can check it out in this [repository](https://github.com/Pierniki/typesafe-i18n-hygraph-nextjs).
 
 ### Localization Setup
 
