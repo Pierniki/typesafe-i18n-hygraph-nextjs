@@ -20,7 +20,7 @@ Localization involves adapting a product or content to suit a specific locale, e
 
 Let's start with adding locales to our Hygraph project's settings. This setup will determine which locales are going to be available in our application.
 
-<img width="533" alt="image" src="https://github.com/Pierniki/typesafe-i18n-nextjs-hygraph/assets/35572075/6ef8e6e7-e3c6-46b2-af16-1478284ace79">
+<img width="533" alt="image" src="https://github.com/Pierniki/typesafe-i18n-hygraph-nextjs/blob/master/assets/locales.png?raw=true">
 
 Next step involves setting up a schema. I created a blogpost with two fields:
 
@@ -29,7 +29,7 @@ Next step involves setting up a schema. I created a blogpost with two fields:
 
 _Remember to mark these fields as localizable_.
 
-<img width="471" alt="image" src="https://github.com/Pierniki/typesafe-i18n-nextjs-hygraph/assets/35572075/ee7059e2-eb52-4470-9d8a-4a22d7e7e2a1">
+<img width="471" alt="image" src="https://github.com/Pierniki/typesafe-i18n-hygraph-nextjs/blob/master/assets/blogpost.png?raw=true">
 
 Last step involves creating some sample blogposts for testing purpouses.
 
